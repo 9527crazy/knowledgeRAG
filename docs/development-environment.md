@@ -117,13 +117,29 @@ ollama pull qwen2.5:7b
 ollama pull bge-m3
 ```
 
-### 4.5 Qdrant embedded
+### 4.5 Qdrant
 
-项目使用 `Qdrant embedded` 模式作为向量存储层：
+当前项目代码通过 JavaScript REST 客户端连接本地 `Qdrant` 实例作为向量存储层。
 
-- 无需单独启动独立数据库服务
-- 通过 TypeScript SDK 在进程内使用
-- 数据持久化到本地目录
+本地开发时需要单独启动 `Qdrant` 服务，并将数据目录挂载到 `backend/data/qdrant`。
+
+推荐启动方式为 Docker：
+
+```bash
+docker pull qdrant/qdrant
+
+docker run -p 6333:6333 \
+  -v $(pwd)/backend/data/qdrant:/qdrant/storage \
+  qdrant/qdrant
+```
+
+启动后可通过以下命令验证：
+
+```bash
+curl http://127.0.0.1:6333/collections
+```
+
+如果返回 JSON 结果，则说明本地 `Qdrant` 已启动成功。
 
 默认数据目录：
 
@@ -154,7 +170,8 @@ ollama pull bge-m3
 4. 安装项目依赖
 5. 创建本地数据目录与配置文件
 6. 启动 Ollama
-7. 启动项目索引与查询服务
+7. 启动 Qdrant
+8. 启动项目索引与查询服务
 
 ---
 
@@ -213,6 +230,8 @@ ollama pull bge-m3
 | `LLM_MODEL` | `qwen2.5:7b` | 生成模型 |
 | `EMBEDDING_MODEL` | `bge-m3` | 向量模型 |
 | `SERVER_PORT` | `3000` | API 端口 |
+| `QDRANT_COLLECTION_NAME` | `knowledge_chunks` | Qdrant collection 名称 |
+| `EMBEDDING_DIMENSIONS` | `1024` | 向量维度 |
 | `QDRANT_PATH` | `./data/qdrant` | 向量库存储路径 |
 | `LEDGER_PATH` | `./data/ledger.db` | SQLite 台账路径 |
 
@@ -237,6 +256,8 @@ ollama pull bge-m3
   "llm_model": "qwen2.5:7b",
   "embedding_model": "bge-m3",
   "server_port": 3000,
+  "qdrant_collection_name": "knowledge_chunks",
+  "embedding_dimensions": 1024,
   "qdrant_path": "./data/qdrant",
   "ledger_path": "./data/ledger.db"
 }
@@ -277,7 +298,31 @@ ollama serve
 ollama list
 ```
 
-### 8.4 启动项目
+### 8.4 启动 Qdrant
+
+建议在仓库根目录执行：
+
+```bash
+docker run -p 6333:6333 \
+  -v $(pwd)/backend/data/qdrant:/qdrant/storage \
+  qdrant/qdrant
+```
+
+如果本机尚未拉取镜像，可先执行：
+
+```bash
+docker pull qdrant/qdrant
+```
+
+启动后可验证：
+
+```bash
+curl http://127.0.0.1:6333/collections
+```
+
+如果命令返回 JSON，说明 Qdrant 已可被项目访问。
+
+### 8.5 启动项目
 
 根据项目实际脚本命名，建议约定以下命令：
 
@@ -310,7 +355,7 @@ bun run server
 - 文件扫描是否正常
 - 切块是否正常
 - embedding 是否成功
-- Qdrant 是否成功写入
+- Qdrant 是否可访问并成功写入
 - 查询是否能召回正确片段
 - 大模型回答是否引用上下文
 
