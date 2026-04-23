@@ -86,11 +86,15 @@ knowledgeRAG/
 │   ├── plan/
 │   │   ├── 1.md
 │   │   ├── 2.md
-│   │   └── 3.md
+│   │   ├── 3.md
+│   │   ├── 4.md
+│   │   └── 5.md
 │   └── test/
 │       ├── 1.md
 │       ├── 2.md
-│       └── 3.md
+│       ├── 3.md
+│       ├── 4.md
+│       └── 5.md
 └── backend/                     # 后端代码项目入口
     ├── config.ts
     ├── package.json
@@ -108,7 +112,7 @@ knowledgeRAG/
     └── knowledge/
 ```
 
-说明：当前仓库主要包含规划与设计文档，`backend/` 仍在按分日计划逐步落地。
+说明：仓库包含规划与设计文档与 `backend/` 代码；功能按分日计划持续落地。
 
 ## 开发计划
 
@@ -131,9 +135,13 @@ knowledgeRAG/
 - [docs/plan/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
 - [docs/plan/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/2.md)
 - [docs/plan/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/3.md)
+- [docs/plan/4.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/4.md)
+- [docs/plan/5.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/5.md)
 - [docs/test/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [docs/test/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [docs/test/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
+- [docs/test/4.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/4.md)
+- [docs/test/5.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/5.md)
 
 ## 文档导航
 
@@ -145,9 +153,13 @@ knowledgeRAG/
 - [第 1 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
 - [第 2 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/2.md)
 - [第 3 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/3.md)
+- [第 4 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/4.md)
+- [第 5 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/5.md)
 - [第 1 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [第 2 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [第 3 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
+- [第 4 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/4.md)
+- [第 5 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/5.md)
 
 ## 预期运行环境
 
@@ -181,5 +193,9 @@ bun run dev
 - 第 2 天校验文档
 - 第 3 天实施细化文档
 - 第 3 天校验文档
+- 第 4 天实施细化文档
+- 第 4 天校验文档
+- 第 5 天实施细化文档
+- 第 5 天校验文档
 
-下一步将继续按分日计划推进 `backend/` 的 ingest、索引与查询能力落地。
+下一步将继续按分日计划推进 `backend/` 的 ingest、向量入库与检索能力落地。
