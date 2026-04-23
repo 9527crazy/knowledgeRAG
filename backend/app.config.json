@@ -1,0 +1,23 @@
+{
+  "sources": [
+    {
+      "name": "default",
+      "path": "./knowledge",
+      "include": [".md", ".txt"],
+      "recursive": true
+    }
+  ],
+  "chunk_size": 500,
+  "chunk_overlap": 80,
+  "min_chunk_length": 50,
+  "top_k": 6,
+  "similarity_threshold": 0.7,
+  "ollama_base_url": "http://localhost:11434",
+  "llm_model": "qwen2.5:7b",
+  "embedding_model": "bge-m3",
+  "llm_temperature": 0.1,
+  "llm_max_tokens": 2048,
+  "server_port": 3000,
+  "qdrant_path": "./data/qdrant",
+  "ledger_path": "./data/ledger.db"
+}

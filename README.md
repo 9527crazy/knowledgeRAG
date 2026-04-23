@@ -80,9 +80,12 @@ knowledgeRAG/
 │   ├── development-environment.md
 │   ├── rag-principle.md
 │   ├── requirement.md
-│   └── plan/
+│   ├── rule.md
+│   ├── plan/
 │       └── 1.md
-└── backend/                     # 后端代码项目入口（待实现）
+│   └── test/
+│       └── 1.md
+└── backend/                     # 后端代码项目入口
     ├── config.ts
     ├── package.json
     ├── tsconfig.json
@@ -120,14 +123,17 @@ knowledgeRAG/
 
 - [docs/coding-plan.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/coding-plan.md)
 - [docs/plan/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
+- [docs/test/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 
 ## 文档导航
 
 - [需求文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/requirement.md)
 - [RAG 技术原理](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/rag-principle.md)
 - [开发环境文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/development-environment.md)
+- [项目规则文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/rule.md)
 - [代码编写计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/coding-plan.md)
 - [第 1 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
+- [第 1 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 
 ## 预期运行环境
 
@@ -153,7 +159,9 @@ bun run dev
 - 需求文档整理
 - RAG 原理说明
 - 开发环境约定
+- Plan/Test 对齐规则
 - 第一阶段编码计划
 - 第 1 天实施细化文档
+- 第 1 天校验文档
 
 下一步将进入 `backend/` 项目骨架初始化与基础配置模块落地。
