@@ -21,6 +21,8 @@ export const appConfigSchema = z
     llm_temperature: z.number().min(0, "llm_temperature 不能小于 0"),
     llm_max_tokens: z.number().int().positive("llm_max_tokens 必须大于 0"),
     server_port: z.number().int().min(1, "server_port 必须在 1-65535 之间").max(65535, "server_port 必须在 1-65535 之间"),
+    qdrant_collection_name: z.string().trim().min(1, "qdrant_collection_name 不能为空"),
+    embedding_dimensions: z.number().int().positive("embedding_dimensions 必须大于 0"),
     qdrant_path: z.string().trim().min(1, "qdrant_path 不能为空"),
     ledger_path: z.string().trim().min(1, "ledger_path 不能为空")
   })

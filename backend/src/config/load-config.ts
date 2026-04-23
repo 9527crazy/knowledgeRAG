@@ -150,15 +150,15 @@ function getEnvOverride(): AppConfigInput {
     override.similarity_threshold = parseNumber(env.SIMILARITY_THRESHOLD, "SIMILARITY_THRESHOLD");
   }
 
-  if (env.OLLAMA_BASE_URL) {
+  if (env.OLLAMA_BASE_URL !== undefined) {
     override.ollama_base_url = env.OLLAMA_BASE_URL;
   }
 
-  if (env.LLM_MODEL) {
+  if (env.LLM_MODEL !== undefined) {
     override.llm_model = env.LLM_MODEL;
   }
 
-  if (env.EMBEDDING_MODEL) {
+  if (env.EMBEDDING_MODEL !== undefined) {
     override.embedding_model = env.EMBEDDING_MODEL;
   }
 
@@ -174,11 +174,19 @@ function getEnvOverride(): AppConfigInput {
     override.server_port = parseNumber(env.SERVER_PORT, "SERVER_PORT");
   }
 
-  if (env.QDRANT_PATH) {
+  if (env.QDRANT_COLLECTION_NAME !== undefined) {
+    override.qdrant_collection_name = env.QDRANT_COLLECTION_NAME;
+  }
+
+  if (env.EMBEDDING_DIMENSIONS) {
+    override.embedding_dimensions = parseNumber(env.EMBEDDING_DIMENSIONS, "EMBEDDING_DIMENSIONS");
+  }
+
+  if (env.QDRANT_PATH !== undefined) {
     override.qdrant_path = env.QDRANT_PATH;
   }
 
-  if (env.LEDGER_PATH) {
+  if (env.LEDGER_PATH !== undefined) {
     override.ledger_path = env.LEDGER_PATH;
   }
 

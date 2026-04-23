@@ -18,6 +18,8 @@ export interface AppConfig {
   llm_temperature: number;
   llm_max_tokens: number;
   server_port: number;
+  qdrant_collection_name: string;
+  embedding_dimensions: number;
   qdrant_path: string;
   ledger_path: string;
 }

@@ -11,6 +11,8 @@ async function main(): Promise<void> {
     details: {
       sources: config.sources.length,
       server_port: config.server_port,
+      qdrant_collection_name: config.qdrant_collection_name,
+      embedding_dimensions: config.embedding_dimensions,
       qdrant_path: config.qdrant_path,
       ledger_path: config.ledger_path
     }

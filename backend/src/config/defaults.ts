@@ -20,6 +20,8 @@ export const defaultConfig: AppConfig = {
   llm_temperature: 0.1,
   llm_max_tokens: 2048,
   server_port: 3000,
+  qdrant_collection_name: "knowledge_chunks",
+  embedding_dimensions: 1024,
   qdrant_path: "./data/qdrant",
   ledger_path: "./data/ledger.db"
 };

@@ -29,6 +29,24 @@ export class ValidationError extends AppError {
   }
 }
 
+export class OllamaError extends AppError {
+  constructor(message: string, options: AppErrorOptions = {}) {
+    super("OLLAMA_ERROR", message, options);
+  }
+}
+
+export class QdrantError extends AppError {
+  constructor(message: string, options: AppErrorOptions = {}) {
+    super("QDRANT_ERROR", message, options);
+  }
+}
+
+export class LedgerError extends AppError {
+  constructor(message: string, options: AppErrorOptions = {}) {
+    super("LEDGER_ERROR", message, options);
+  }
+}
+
 export function isAppError(error: unknown): error is AppError {
   return error instanceof AppError;
 }

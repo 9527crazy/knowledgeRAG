@@ -19,6 +19,8 @@ async function main(): Promise<void> {
         llm_temperature: config.llm_temperature,
         llm_max_tokens: config.llm_max_tokens,
         server_port: config.server_port,
+        qdrant_collection_name: config.qdrant_collection_name,
+        embedding_dimensions: config.embedding_dimensions,
         qdrant_path: config.qdrant_path,
         ledger_path: config.ledger_path
       },
