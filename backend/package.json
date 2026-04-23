@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "check:config": "bun run src/scripts/check-config.ts",
     "health-check": "bun run src/scripts/health-check.ts",
-    "ingest:demo": "bun run src/scripts/ingest-demo.ts"
+    "ingest:demo": "bun run src/scripts/ingest-demo.ts",
+    "index:demo": "bun run src/scripts/index-plan-demo.ts"
   },
   "dependencies": {
     "@qdrant/js-client-rest": "^1.15.1",

@@ -47,6 +47,12 @@ export class LedgerError extends AppError {
   }
 }
 
+export class IngestError extends AppError {
+  constructor(message: string, options: AppErrorOptions = {}) {
+    super("INGEST_ERROR", message, options);
+  }
+}
+
 export function isAppError(error: unknown): error is AppError {
   return error instanceof AppError;
 }
