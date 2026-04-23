@@ -36,14 +36,16 @@
 
 根据需求文档，推荐开发机基线如下：
 
-| 项目 | 建议配置 |
-| --- | --- |
-| 操作系统 | macOS |
-| 机器配置 | Mac M5 / 24GB 内存 / 1TB 存储 |
-| 运行时 | Bun |
-| 语言 | TypeScript |
-| Node 兼容环境 | 可选，用于生态工具兼容 |
-| 本地模型服务 | Ollama |
+
+| 项目        | 建议配置                      |
+| --------- | ------------------------- |
+| 操作系统      | macOS                     |
+| 机器配置      | Mac M5 / 24GB 内存 / 1TB 存储 |
+| 运行时       | Bun                       |
+| 语言        | TypeScript                |
+| Node 兼容环境 | 可选，用于生态工具兼容               |
+| 本地模型服务    | Ollama                    |
+
 
 说明：
 
@@ -105,10 +107,12 @@ ollama list
 
 根据需求文档，项目使用以下本地模型：
 
-| 用途 | 模型 |
-| --- | --- |
+
+| 用途   | 模型           |
+| ---- | ------------ |
 | 生成模型 | `qwen2.5:7b` |
-| 向量模型 | `bge-m3` |
+| 向量模型 | `bge-m3`     |
+
 
 首次使用前需要提前拉取：
 
@@ -224,16 +228,18 @@ curl http://127.0.0.1:6333/collections
 
 建议首版至少包含以下配置项：
 
-| 配置项 | 示例值 | 说明 |
-| --- | --- | --- |
-| `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama 地址 |
-| `LLM_MODEL` | `qwen2.5:7b` | 生成模型 |
-| `EMBEDDING_MODEL` | `bge-m3` | 向量模型 |
-| `SERVER_PORT` | `3000` | API 端口 |
-| `QDRANT_COLLECTION_NAME` | `knowledge_chunks` | Qdrant collection 名称 |
-| `EMBEDDING_DIMENSIONS` | `1024` | 向量维度 |
-| `QDRANT_PATH` | `./data/qdrant` | 向量库存储路径 |
-| `LEDGER_PATH` | `./data/ledger.db` | SQLite 台账路径 |
+
+| 配置项                      | 示例值                      | 说明                   |
+| ------------------------ | ------------------------ | -------------------- |
+| `OLLAMA_BASE_URL`        | `http://localhost:11434` | Ollama 地址            |
+| `LLM_MODEL`              | `qwen2.5:7b`             | 生成模型                 |
+| `EMBEDDING_MODEL`        | `bge-m3`                 | 向量模型                 |
+| `SERVER_PORT`            | `3000`                   | API 端口               |
+| `QDRANT_COLLECTION_NAME` | `knowledge_chunks`       | Qdrant collection 名称 |
+| `EMBEDDING_DIMENSIONS`   | `1024`                   | 向量维度                 |
+| `QDRANT_PATH`            | `./data/qdrant`          | 向量库存储路径              |
+| `LEDGER_PATH`            | `./data/ledger.db`       | SQLite 台账路径          |
+
 
 知识源配置建议与需求文档保持一致：
 

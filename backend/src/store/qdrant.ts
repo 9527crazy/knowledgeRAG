@@ -3,7 +3,8 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 import type { AppConfig } from "../config/types";
 import { QdrantError } from "../common/errors";
 
-const DEFAULT_QDRANT_URL = "http://127.0.0.1:6333";
+/** 与 vector-repository、健康检查共用的本地 Qdrant REST 入口 */
+export const DEFAULT_QDRANT_URL = "http://127.0.0.1:6333";
 
 export interface QdrantStatus {
   ok: boolean;

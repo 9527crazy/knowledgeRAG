@@ -4,7 +4,9 @@ import { hashFileContent } from "./hash";
 import type { IndexPlanEntry, ParsedDocument, ScannedFile, TextChunk } from "./types";
 
 /**
- * `status = done`：切块与 hash 已写入台账；向量写入 Qdrant 归属第 5 天。
+ * 台账 `status = done`：
+ * - 仅执行第 4 天 `persistIndexedDocument`（无向量）时：表示切块与 hash 已落库；
+ * - 经第 5 天 `indexDocument` 成功后：表示已向量化并写入 Qdrant（与 chunk_ids 一致）。
  */
 
 /** 对扫描到的文件批量计算 MD5（路径 → hex） */
