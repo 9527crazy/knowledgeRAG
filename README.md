@@ -83,10 +83,12 @@ knowledgeRAG/
 │   ├── rule.md
 │   ├── plan/
 │   │   ├── 1.md
-│   │   └── 2.md
+│   │   ├── 2.md
+│   │   └── 3.md
 │   └── test/
 │       ├── 1.md
-│       └── 2.md
+│       ├── 2.md
+│       └── 3.md
 └── backend/                     # 后端代码项目入口
     ├── config.ts
     ├── package.json
@@ -126,8 +128,10 @@ knowledgeRAG/
 - [docs/coding-plan.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/coding-plan.md)
 - [docs/plan/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
 - [docs/plan/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/2.md)
+- [docs/plan/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/3.md)
 - [docs/test/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [docs/test/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
+- [docs/test/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
 
 ## 文档导航
 
@@ -138,8 +142,10 @@ knowledgeRAG/
 - [代码编写计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/coding-plan.md)
 - [第 1 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
 - [第 2 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/2.md)
+- [第 3 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/3.md)
 - [第 1 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [第 2 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
+- [第 3 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
 
 ## 预期运行环境
 
@@ -171,5 +177,7 @@ bun run dev
 - 第 1 天校验文档
 - 第 2 天实施细化文档
 - 第 2 天校验文档
+- 第 3 天实施细化文档
+- 第 3 天校验文档
 
-下一步将进入 `backend/` 项目骨架初始化与基础配置模块落地。
+下一步将继续按分日计划推进 `backend/` 的 ingest、索引与查询能力落地。
