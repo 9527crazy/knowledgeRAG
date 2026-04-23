@@ -50,5 +50,6 @@
 | Plan | Test | 状态 |
 | --- | --- | --- |
 | `docs/plan/1.md` | `docs/test/1.md` | 已对齐 |
+| `docs/plan/2.md` | `docs/test/2.md` | 已对齐 |
 
 后续新增阶段文档时，应继续按该规则扩展。

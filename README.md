@@ -82,9 +82,11 @@ knowledgeRAG/
 │   ├── requirement.md
 │   ├── rule.md
 │   ├── plan/
-│       └── 1.md
+│   │   ├── 1.md
+│   │   └── 2.md
 │   └── test/
-│       └── 1.md
+│       ├── 1.md
+│       └── 2.md
 └── backend/                     # 后端代码项目入口
     ├── config.ts
     ├── package.json
@@ -123,7 +125,9 @@ knowledgeRAG/
 
 - [docs/coding-plan.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/coding-plan.md)
 - [docs/plan/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
+- [docs/plan/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/2.md)
 - [docs/test/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
+- [docs/test/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 
 ## 文档导航
 
@@ -133,7 +137,9 @@ knowledgeRAG/
 - [项目规则文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/rule.md)
 - [代码编写计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/coding-plan.md)
 - [第 1 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/1.md)
+- [第 2 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/2.md)
 - [第 1 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
+- [第 2 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 
 ## 预期运行环境
 
@@ -163,5 +169,7 @@ bun run dev
 - 第一阶段编码计划
 - 第 1 天实施细化文档
 - 第 1 天校验文档
+- 第 2 天实施细化文档
+- 第 2 天校验文档
 
 下一步将进入 `backend/` 项目骨架初始化与基础配置模块落地。
