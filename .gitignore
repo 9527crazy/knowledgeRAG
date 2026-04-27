@@ -1,2 +1,4 @@
 .DS_Store
 .cursor
+backend/data/*
+backend/knowledge/
