@@ -57,6 +57,7 @@
 | `docs/plan/5.md` | `docs/test/5.md` | 已对齐 |
 | `docs/plan/6.md` | `docs/test/6.md` | 已对齐 |
 | `docs/plan/7.md` | `docs/test/7.md` | 已对齐 |
+| `docs/plan/8.md` | `docs/test/8.md` | 已对齐 |
 
 
 后续新增阶段文档时，应继续按该规则扩展。
