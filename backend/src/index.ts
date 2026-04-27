@@ -1,6 +1,7 @@
 import { loadConfig } from "../config";
 import { isAppError } from "./common/errors";
 import { createLogger } from "./common/logger";
+import { startServer } from "./server/app";
 
 const logger = createLogger("bootstrap");
 
@@ -9,6 +10,7 @@ async function main(): Promise<void> {
 
   logger.info("knowledgeRAG backend skeleton started", {
     details: {
+      mode: "http",
       sources: config.sources.length,
       server_port: config.server_port,
       qdrant_collection_name: config.qdrant_collection_name,
@@ -17,6 +19,15 @@ async function main(): Promise<void> {
       ledger_path: config.ledger_path
     }
   });
+
+  const server = startServer(config);
+  const stop = (): void => {
+    logger.info("shutdown", { details: { port: server.port } });
+    server.stop();
+  };
+
+  process.on("SIGINT", stop);
+  process.on("SIGTERM", stop);
 }
 
 main().catch((error: unknown) => {
