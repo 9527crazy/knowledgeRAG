@@ -7,6 +7,7 @@
     "dev": "bun --watch run src/index.ts",
     "start": "bun run src/index.ts",
     "typecheck": "tsc --noEmit",
+    "test": "bun test",
     "check:config": "bun run src/scripts/check-config.ts",
     "health-check": "bun run src/scripts/health-check.ts",
     "ingest:demo": "bun run src/scripts/ingest-demo.ts",

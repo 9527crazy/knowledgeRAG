@@ -13,5 +13,5 @@
     "types": ["bun"],
     "noEmit": true
   },
-  "include": ["./config.ts", "./src/**/*.ts"]
+  "include": ["./config.ts", "./src/**/*.ts", "./tests/**/*.ts"]
 }

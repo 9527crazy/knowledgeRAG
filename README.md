@@ -2,7 +2,7 @@
 
 一个本地运行的 RAG 知识系统，用于把本地文档索引为可检索知识库，并基于检索结果生成带来源引用的回答。
 
-项目当前处于第一阶段规划与实施准备期，目标是先跑通“文档入库 -> 向量检索 -> LLM 生成 -> API 返回”的最小闭环。
+第一阶段已实现「文档入库 → 向量检索 → LLM 生成 → HTTP/SSE API」闭环，并提供自动化测试与状态/重索引接口。
 
 ## 项目目标
 
@@ -23,7 +23,7 @@
 | 生成模型 | `Qwen2.5:7b`       |
 | 向量模型 | `bge-m3`           |
 | 模型服务 | `Ollama`           |
-| 向量存储 | `Qdrant embedded`  |
+| 向量存储 | Qdrant（本地 REST，默认 `http://127.0.0.1:6333`） |
 | 索引台账 | `SQLite`           |
 
 
@@ -91,7 +91,9 @@ knowledgeRAG/
 │   │   ├── 5.md
 │   │   ├── 6.md
 │   │   ├── 7.md
-│   │   └── 8.md
+│   │   ├── 8.md
+│   │   ├── 9.md
+│   │   └── 10.md
 │   └── test/
 │       ├── 1.md
 │       ├── 2.md
@@ -100,7 +102,9 @@ knowledgeRAG/
 │       ├── 5.md
 │       ├── 6.md
 │       ├── 7.md
-│       └── 8.md
+│       ├── 8.md
+│       ├── 9.md
+│       └── 10.md
 └── backend/                     # 后端代码项目入口
     ├── config.ts
     ├── package.json
@@ -147,6 +151,7 @@ knowledgeRAG/
 - [docs/plan/7.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/7.md)
 - [docs/plan/8.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/8.md)
 - [docs/plan/9.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/9.md)
+- [docs/plan/10.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/10.md)
 - [docs/test/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [docs/test/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [docs/test/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
@@ -156,6 +161,7 @@ knowledgeRAG/
 - [docs/test/7.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/7.md)
 - [docs/test/8.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/8.md)
 - [docs/test/9.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/9.md)
+- [docs/test/10.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/10.md)
 
 ## 文档导航
 
@@ -173,6 +179,7 @@ knowledgeRAG/
 - [第 7 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/7.md)
 - [第 8 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/8.md)
 - [第 9 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/9.md)
+- [第 10 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/10.md)
 - [第 1 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [第 2 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [第 3 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
@@ -182,48 +189,79 @@ knowledgeRAG/
 - [第 7 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/7.md)
 - [第 8 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/8.md)
 - [第 9 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/9.md)
+- [第 10 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/10.md)
 
 ## 预期运行环境
 
-- macOS
+- macOS（推荐）
 - `Bun >= 1.1`
-- 已安装并运行 `Ollama`
-- 已拉取模型：
-  - `qwen2.5:7b`
-  - `bge-m3`
+- **Ollama** 已运行，并已拉取模型：`qwen2.5:7b`、`bge-m3:latest`（名称与 `backend/app.config.json` 可一致）
+- **Qdrant**：独立进程，REST 默认 `http://127.0.0.1:6333`（与 `@qdrant/js-client-rest` 默认一致）
 
-未来 `backend/` 初始化完成后，预期启动方式如下：
+## 快速开始（最小闭环）
 
 ```bash
 cd backend
 bun install
-bun run dev
+bun run health-check    # Ollama / Qdrant / 台账等自检，均为 ok 再继续
+bun run index:full      # 首次建议全量索引（需 Ollama + Qdrant）
+bun run dev             # HTTP 服务，默认端口见 app.config.json（如 3000）
 ```
+
+另开终端快速探测：
+
+```bash
+curl -sS http://localhost:3000/healthz
+curl -sS http://localhost:3000/api/status
+curl -sS -X POST -H "Content-Type: application/json" -d '{"question":"什么是 RAG？"}' http://localhost:3000/api/chat
+# SSE 流：输出中含 event: delta / sources / done
+```
+
+手动重跑失败文档（台账 `status=failed`）：
+
+```bash
+curl -sS -X POST -H "Content-Type: application/json" -d '{}' http://localhost:3000/api/reindex
+```
+
+## 常用脚本（`backend/package.json`）
+
+| 脚本 | 说明 |
+| --- | --- |
+| `bun run dev` | 启动 HTTP + 启动前 bootstrap 索引；默认启用文件监听（可用 `WATCH_DISABLED` 关闭） |
+| `bun run start` | 同入口，无 `--watch` |
+| `bun run typecheck` | `tsc --noEmit` |
+| `bun test` | `bun:test` 单元测试（切块 / 解析 / 状态机 / 检索 mock） |
+| `bun run health-check` | 依赖健康检查 |
+| `bun run index:full` | 全量索引管线 |
+| `bun run watch:index` | 仅 bootstrap + watcher，便于调试监听 |
+| `bun run query:demo` | 检索演示 |
+| `bun run chat:demo` | 对话演示（非 HTTP） |
+
+## 环境变量
+
+| 变量 | 说明 |
+| --- | --- |
+| `WATCH_DISABLED=1` | 禁用随 `bun run dev` 启动的文件系统 watcher（仍保留 HTTP 与启动时 bootstrap 索引） |
+
+其余配置以 `backend/app.config.json`（及加载逻辑）为准。
+
+## 已知问题与限制
+
+| 现象 | 影响 | 规避 | 后续计划 |
+| --- | --- | --- | --- |
+| SQLite 高并发写入仍可能出现短暂锁等待 | watcher 密集事件时偶发延迟 | 已启用 WAL + `busy_timeout`；避免多进程同时写同一 `ledger.db` | 第二阶段评估连接池或队列 |
+| Qdrant 未启动时 | `total_chunks` 为 0；索引/检索失败 | 先启动 Qdrant 再 `health-check` | 启动前强依赖校验（可选） |
+| 仅支持 `md`/`txt` | 其他格式无法入库 | 转换后再放入知识目录 | PDF/代码库等第二阶段 |
+| 无鉴权、无限流 | 本地信任网络可用 | 勿直接暴露公网 | 按需加中间件 |
+| macOS `fs.watch` + 去抖 | 极端批量变更可能漏扫 | 关键变更后手动 `index:full` 或调用 `/api/reindex` | 加固扫描策略 |
+
+## 端到端验收
+
+完整清单见 [docs/test/10.md](docs/test/10.md)（含 `bun test`、API 字段与演示路径）。
 
 ## 当前状态
 
-仓库当前已完成：
+- 第一阶段文档与代码主线已完成（索引、检索、对话、`/api/chat` SSE、监听与增量、`GET /api/status`、`POST /api/reindex`、关键单元测试）。
+- 详细过程文档见 `docs/plan/*.md` 与 `docs/test/*.md`。
 
-- 需求文档整理
-- RAG 原理说明
-- 开发环境约定
-- Plan/Test 对齐规则
-- 第一阶段编码计划
-- 第 1 天实施细化文档
-- 第 1 天校验文档
-- 第 2 天实施细化文档
-- 第 2 天校验文档
-- 第 3 天实施细化文档
-- 第 3 天校验文档
-- 第 4 天实施细化文档
-- 第 4 天校验文档
-- 第 5 天实施细化文档
-- 第 5 天校验文档
-- 第 6 天实施细化文档
-- 第 6 天校验文档
-- 第 7 天实施细化文档
-- 第 7 天校验文档
-- 第 8 天实施细化文档
-- 第 8 天校验文档
-
-下一步将继续按分日计划推进 `backend/` 的文件监听、增量更新与异常补强能力落地。
+**下一步（第二阶段规划）**：PDF 解析、多轮对话、混合检索、多 Collection、生产化运维与鉴权等（见 `docs/requirement.md` 后续章节）。

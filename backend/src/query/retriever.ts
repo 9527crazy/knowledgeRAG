@@ -12,6 +12,27 @@ export interface Retriever {
   retrieve(vector: number[]): Promise<RetrievalCandidate[]>;
 }
 
+/**
+ * 检索实际只依赖 `search`；单独抽出便于单测注入 mock。
+ * 默认仍使用官方 {@link QdrantClient}（经断言收窄为本接口）。
+ */
+export interface QdrantSearchClient {
+  search(
+    collectionName: string,
+    request: {
+      vector: number[];
+      limit: number;
+      with_payload: boolean;
+      with_vector: boolean;
+      score_threshold?: number;
+    }
+  ): Promise<Array<{ id?: unknown; score?: unknown; payload?: unknown }>>;
+}
+
+export interface RetrieverDeps {
+  client?: QdrantSearchClient;
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -88,8 +109,9 @@ function normalizePointId(id: unknown): string {
   }
 }
 
-export function createRetriever(config: AppConfig): Retriever {
-  const client = new QdrantClient({ url: DEFAULT_QDRANT_URL, checkCompatibility: false });
+export function createRetriever(config: AppConfig, deps: RetrieverDeps = {}): Retriever {
+  const client: QdrantSearchClient =
+    deps.client ?? (new QdrantClient({ url: DEFAULT_QDRANT_URL, checkCompatibility: false }) as unknown as QdrantSearchClient);
   const collection = config.qdrant_collection_name;
 
   return {
