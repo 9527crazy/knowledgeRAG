@@ -1,6 +1,8 @@
 import { loadConfig } from "../config";
 import { isAppError } from "./common/errors";
 import { createLogger } from "./common/logger";
+import { runBootstrapIndex } from "./ingest/bootstrap-index";
+import { startWatcher } from "./ingest/watcher";
 import { startServer } from "./server/app";
 
 const logger = createLogger("bootstrap");
@@ -20,9 +22,13 @@ async function main(): Promise<void> {
     }
   });
 
+  await runBootstrapIndex(config);
+
+  const watcher = process.env.WATCH_DISABLED === "1" ? null : startWatcher(config);
   const server = startServer(config);
   const stop = (): void => {
     logger.info("shutdown", { details: { port: server.port } });
+    watcher?.stop();
     server.stop();
   };
 

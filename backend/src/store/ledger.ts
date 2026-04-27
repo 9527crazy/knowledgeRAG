@@ -68,6 +68,10 @@ export function createLedgerStore(config: AppConfig): LedgerStore {
   function getDatabase(): Database {
     if (!db) {
       db = new Database(config.ledger_path, { create: true, strict: true });
+      // 避免并发读写/短时间内多次事件导致的 SQLITE_BUSY。
+      // 在 Bun SQLite 下通过 busy_timeout 让写操作等待锁释放。
+      db.run("PRAGMA busy_timeout = 5000;");
+      db.run("PRAGMA journal_mode = WAL;");
     }
 
     return db;

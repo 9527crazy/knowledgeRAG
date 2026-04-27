@@ -146,6 +146,7 @@ knowledgeRAG/
 - [docs/plan/6.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/6.md)
 - [docs/plan/7.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/7.md)
 - [docs/plan/8.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/8.md)
+- [docs/plan/9.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/9.md)
 - [docs/test/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [docs/test/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [docs/test/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
@@ -154,6 +155,7 @@ knowledgeRAG/
 - [docs/test/6.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/6.md)
 - [docs/test/7.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/7.md)
 - [docs/test/8.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/8.md)
+- [docs/test/9.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/9.md)
 
 ## 文档导航
 
@@ -170,6 +172,7 @@ knowledgeRAG/
 - [第 6 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/6.md)
 - [第 7 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/7.md)
 - [第 8 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/8.md)
+- [第 9 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/9.md)
 - [第 1 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [第 2 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [第 3 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
@@ -178,6 +181,7 @@ knowledgeRAG/
 - [第 6 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/6.md)
 - [第 7 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/7.md)
 - [第 8 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/8.md)
+- [第 9 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/9.md)
 
 ## 预期运行环境
 
@@ -222,4 +226,4 @@ bun run dev
 - 第 8 天实施细化文档
 - 第 8 天校验文档
 
-下一步将继续按分日计划推进 `backend/` 的 API 服务、SSE 流式输出与端到端联调能力落地。
+下一步将继续按分日计划推进 `backend/` 的文件监听、增量更新与异常补强能力落地。
