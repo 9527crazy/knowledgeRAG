@@ -11,7 +11,8 @@
     "health-check": "bun run src/scripts/health-check.ts",
     "ingest:demo": "bun run src/scripts/ingest-demo.ts",
     "index:demo": "bun run src/scripts/index-plan-demo.ts",
-    "index:full": "bun run src/scripts/index-full-pipeline.ts"
+    "index:full": "bun run src/scripts/index-full-pipeline.ts",
+    "query:demo": "bun run src/scripts/retrieve-demo.ts"
   },
   "dependencies": {
     "@qdrant/js-client-rest": "^1.15.1",

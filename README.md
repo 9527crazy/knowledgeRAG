@@ -88,13 +88,17 @@ knowledgeRAG/
 │   │   ├── 2.md
 │   │   ├── 3.md
 │   │   ├── 4.md
-│   │   └── 5.md
+│   │   ├── 5.md
+│   │   ├── 6.md
+│   │   └── 7.md
 │   └── test/
 │       ├── 1.md
 │       ├── 2.md
 │       ├── 3.md
 │       ├── 4.md
-│       └── 5.md
+│       ├── 5.md
+│       ├── 6.md
+│       └── 7.md
 └── backend/                     # 后端代码项目入口
     ├── config.ts
     ├── package.json
@@ -137,11 +141,15 @@ knowledgeRAG/
 - [docs/plan/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/3.md)
 - [docs/plan/4.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/4.md)
 - [docs/plan/5.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/5.md)
+- [docs/plan/6.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/6.md)
+- [docs/plan/7.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/7.md)
 - [docs/test/1.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [docs/test/2.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [docs/test/3.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
 - [docs/test/4.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/4.md)
 - [docs/test/5.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/5.md)
+- [docs/test/6.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/6.md)
+- [docs/test/7.md](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/7.md)
 
 ## 文档导航
 
@@ -155,11 +163,15 @@ knowledgeRAG/
 - [第 3 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/3.md)
 - [第 4 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/4.md)
 - [第 5 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/5.md)
+- [第 6 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/6.md)
+- [第 7 天实施计划](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/plan/7.md)
 - [第 1 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/1.md)
 - [第 2 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/2.md)
 - [第 3 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/3.md)
 - [第 4 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/4.md)
 - [第 5 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/5.md)
+- [第 6 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/6.md)
+- [第 7 天校验文档](/Users/liushuai/codeFliles/github/knowledgeRAG/docs/test/7.md)
 
 ## 预期运行环境
 
@@ -197,5 +209,9 @@ bun run dev
 - 第 4 天校验文档
 - 第 5 天实施细化文档
 - 第 5 天校验文档
+- 第 6 天实施细化文档
+- 第 6 天校验文档
+- 第 7 天实施细化文档
+- 第 7 天校验文档
 
-下一步将继续按分日计划推进 `backend/` 的 ingest、向量入库与检索能力落地。
+下一步将继续按分日计划推进 `backend/` 的 Prompt 组装、回答生成与 API 联调能力落地。
