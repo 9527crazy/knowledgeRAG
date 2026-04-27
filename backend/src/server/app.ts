@@ -7,6 +7,7 @@ import { createEmbedder } from "../ingest/embedder";
 import { createLedgerStore } from "../store/ledger";
 import { createVectorRepository } from "../store/vector-repository";
 import { DEFAULT_QDRANT_URL } from "../store/qdrant";
+import { mergeCorsHeaders, tryBuildCorsHeaders } from "./cors";
 import { handleChatRequest } from "./routes/chat";
 import { handleReindexRequest } from "./routes/reindex";
 import { handleStatusRequest } from "./routes/status";
@@ -47,33 +48,39 @@ export function createFetchHandler(config: AppConfig): {
   const fetch = async (req: Request): Promise<Response> => {
     const url = new URL(req.url);
 
-    try {
-      if (url.pathname === "/healthz" && req.method === "GET") {
-        return Response.json({ status: "ok" }, { status: 200 });
+    if (req.method === "OPTIONS") {
+      const cors = tryBuildCorsHeaders(req);
+      if (!cors) {
+        return new Response(null, { status: 403 });
       }
+      return new Response(null, { status: 204, headers: cors });
+    }
 
-      if (url.pathname === "/api/status" && req.method === "GET") {
-        return await handleStatusRequest(req, {
+    try {
+      let response: Response;
+
+      if (url.pathname === "/healthz" && req.method === "GET") {
+        response = Response.json({ status: "ok" }, { status: 200 });
+      } else if (url.pathname === "/api/status" && req.method === "GET") {
+        response = await handleStatusRequest(req, {
           config,
           ledger: getLedger(),
           qdrantClient: getQdrant()
         });
-      }
-
-      if (url.pathname === "/api/reindex") {
-        return await handleReindexRequest(req, {
+      } else if (url.pathname === "/api/reindex") {
+        response = await handleReindexRequest(req, {
           config,
           ledger: getLedger(),
           vectorRepo: getVectorRepo(),
           embedder: getEmbedder()
         });
+      } else if (url.pathname === "/api/chat") {
+        response = await handleChatRequest(req, config);
+      } else {
+        response = jsonError(404, "NOT_FOUND", "路由不存在", { path: url.pathname });
       }
 
-      if (url.pathname === "/api/chat") {
-        return await handleChatRequest(req, config);
-      }
-
-      return jsonError(404, "NOT_FOUND", "路由不存在", { path: url.pathname });
+      return mergeCorsHeaders(response, req);
     } catch (error) {
       const summary = summarizeError(error, "INTERNAL_SERVER_ERROR");
 
@@ -85,7 +92,7 @@ export function createFetchHandler(config: AppConfig): {
         log.error("发生未知异常", { code: summary.code, details: { error } });
       }
 
-      return jsonError(500, summary.code, summary.message, summary.details);
+      return mergeCorsHeaders(jsonError(500, summary.code, summary.message, summary.details), req);
     }
   };
 

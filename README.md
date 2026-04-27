@@ -242,6 +242,7 @@ curl -sS -X POST -H "Content-Type: application/json" -d '{}' http://localhost:30
 | 变量 | 说明 |
 | --- | --- |
 | `WATCH_DISABLED=1` | 禁用随 `bun run dev` 启动的文件系统 watcher（仍保留 HTTP 与启动时 bootstrap 索引） |
+| `CORS_ORIGINS` | 跨域：未设置或 `*` 时允许任意 Origin（`Access-Control-Allow-Origin: *`）。设为逗号分隔列表（如 `http://localhost:5173,http://127.0.0.1:5173`）时仅允许这些来源；浏览器 `Origin` 不在列表内则预检返回 403 |
 
 其余配置以 `backend/app.config.json`（及加载逻辑）为准。
 
