@@ -9,7 +9,11 @@ import type { RetrievalCandidate } from "./types";
 const log = createLogger("retriever");
 
 export interface Retriever {
-  retrieve(vector: number[]): Promise<RetrievalCandidate[]>;
+  retrieve(vector: number[], options?: RetrieveOptions): Promise<RetrievalCandidate[]>;
+}
+
+export interface RetrieveOptions {
+  limitOverride?: number;
 }
 
 /**
@@ -115,11 +119,12 @@ export function createRetriever(config: AppConfig, deps: RetrieverDeps = {}): Re
   const collection = config.qdrant_collection_name;
 
   return {
-    async retrieve(vector: number[]): Promise<RetrievalCandidate[]> {
+    async retrieve(vector: number[], options: RetrieveOptions = {}): Promise<RetrievalCandidate[]> {
+      const limit = options.limitOverride ?? config.top_k;
       try {
         const points = await client.search(collection, {
           vector,
-          limit: config.top_k,
+          limit,
           with_payload: true,
           with_vector: false,
           score_threshold: config.similarity_threshold
@@ -161,7 +166,7 @@ export function createRetriever(config: AppConfig, deps: RetrieverDeps = {}): Re
           cause: error,
           details: {
             collection,
-            top_k: config.top_k,
+            top_k: limit,
             similarity_threshold: config.similarity_threshold
           }
         });
@@ -169,4 +174,3 @@ export function createRetriever(config: AppConfig, deps: RetrieverDeps = {}): Re
     }
   };
 }
-

@@ -4,6 +4,10 @@ export interface RetrievalCandidate {
   chunk_id: string;
   score: number;
   payload: ChunkPayload;
+  /** 多 query 合并后的内部重排字段，不对前端公开 */
+  hit_count?: number;
+  rank_score?: number;
+  matched_queries?: string[];
 }
 
 /**
@@ -29,4 +33,3 @@ export interface RetrievalResult {
   /** 过滤后无结果，用于上层短路（不调用 LLM） */
   empty: boolean;
 }
-

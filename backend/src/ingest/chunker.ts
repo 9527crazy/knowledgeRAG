@@ -102,6 +102,30 @@ function sliceRanges(fullText: string, chunkSize: number, overlap: number): Arra
   return ranges;
 }
 
+function basename(path: string): string {
+  const normalized = path.replaceAll("\\", "/");
+  const parts = normalized.split("/");
+  return parts[parts.length - 1] ?? normalized;
+}
+
+function nonEmptyLine(label: string, value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed && trimmed.length > 0 ? `${label}：${trimmed}` : undefined;
+}
+
+function buildChunkSearchHeader(parsed: ParsedDocument, sectionTitle: string): string {
+  const filename = basename(parsed.source_path || parsed.relative_path);
+  const title = parsed.doc_title.trim().length > 0 ? parsed.doc_title : filename;
+  const lines = [
+    nonEmptyLine("文档标题", title),
+    nonEmptyLine("文件名", filename),
+    nonEmptyLine("相对路径", parsed.relative_path),
+    nonEmptyLine("章节标题", sectionTitle)
+  ].filter((line): line is string => line !== undefined);
+
+  return lines.length > 0 ? `${lines.join("\n")}\n\n原文：\n` : "";
+}
+
 export function chunkDocument(parsed: ParsedDocument, options: ChunkOptions): TextChunk[] {
   const layout = buildLayout(parsed);
   const { fullText } = layout;
@@ -109,13 +133,19 @@ export function chunkDocument(parsed: ParsedDocument, options: ChunkOptions): Te
   const rawRanges = sliceRanges(fullText, options.chunk_size, options.chunk_overlap);
   const filtered = rawRanges.filter(({ start, end }) => end - start >= options.min_chunk_length);
 
-  return filtered.map((range, chunk_index) => ({
-    chunk_id: randomUUID(),
-    chunk_text: fullText.slice(range.start, range.end),
-    chunk_index,
-    doc_id: parsed.doc_id,
-    source_path: parsed.source_path,
-    relative_path: parsed.relative_path,
-    section_title: sectionTitleAt(range.start, layout)
-  }));
+  return filtered.map((range, chunk_index) => {
+    const section_title = sectionTitleAt(range.start, layout);
+    const body = fullText.slice(range.start, range.end);
+    const header = buildChunkSearchHeader(parsed, section_title);
+
+    return {
+      chunk_id: randomUUID(),
+      chunk_text: `${header}${body}`,
+      chunk_index,
+      doc_id: parsed.doc_id,
+      source_path: parsed.source_path,
+      relative_path: parsed.relative_path,
+      section_title
+    };
+  });
 }

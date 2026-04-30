@@ -14,14 +14,37 @@ function baseDoc(sections: ParsedDocument["sections"]): ParsedDocument {
   };
 }
 
+function originalBody(chunkText: string): string {
+  return chunkText.split("原文：\n")[1] ?? chunkText;
+}
+
 describe("chunkDocument", () => {
   test("单节短文本：一节一块，section_title 对齐", () => {
     const parsed = baseDoc([{ section_title: "概述", content: "只有一行正文。", order: 0 }]);
     const chunks = chunkDocument(parsed, { chunk_size: 200, chunk_overlap: 0, min_chunk_length: 1 });
     expect(chunks.length).toBe(1);
     expect(chunks[0]!.section_title).toBe("概述");
-    expect(chunks[0]!.chunk_text).toBe("只有一行正文。");
+    expect(chunks[0]!.chunk_text).toContain("文档标题：t");
+    expect(chunks[0]!.chunk_text).toContain("文件名：a.md");
+    expect(chunks[0]!.chunk_text).toContain("相对路径：a.md");
+    expect(chunks[0]!.chunk_text).toContain("章节标题：概述");
+    expect(chunks[0]!.chunk_text).toContain("原文：\n只有一行正文。");
     expect(chunks[0]!.chunk_index).toBe(0);
+  });
+
+  test("上下文头：缺失字段不输出空行，doc_title 缺失时用文件名兜底", () => {
+    const parsed: ParsedDocument = {
+      ...baseDoc([{ section_title: "", content: "正文。", order: 0 }]),
+      doc_title: "",
+      relative_path: ""
+    };
+    const chunks = chunkDocument(parsed, { chunk_size: 200, chunk_overlap: 0, min_chunk_length: 1 });
+    const text = chunks[0]!.chunk_text;
+    expect(text).toContain("文档标题：a.md");
+    expect(text).toContain("文件名：a.md");
+    expect(text).not.toContain("相对路径：");
+    expect(text).not.toContain("章节标题：");
+    expect(text).toContain("原文：\n正文。");
   });
 
   test("长文本 overlap：后一块起始位置落在此前一块结束之前", () => {
@@ -31,7 +54,7 @@ describe("chunkDocument", () => {
     expect(chunks.length).toBeGreaterThan(1);
     let prevEnd = 0;
     for (let i = 0; i < chunks.length; i++) {
-      const t = chunks[i]!.chunk_text;
+      const t = originalBody(chunks[i]!.chunk_text);
       const from = i === 0 ? 0 : Math.max(0, prevEnd - 80);
       const idx = body.indexOf(t, from);
       expect(idx).not.toBe(-1);
@@ -49,7 +72,7 @@ describe("chunkDocument", () => {
 
     const kept = chunkDocument(parsed, { chunk_size: 100, chunk_overlap: 0, min_chunk_length: 5 });
     expect(kept.length).toBe(1);
-    expect(kept[0]!.chunk_text).toBe("一二三四五");
+    expect(kept[0]!.chunk_text).toContain("原文：\n一二三四五");
   });
 
   test("无可软切分点时硬切仍能前进", () => {
@@ -59,9 +82,10 @@ describe("chunkDocument", () => {
     expect(chunks.length).toBeGreaterThan(2);
     let pos = 0;
     for (const c of chunks) {
-      expect(c.chunk_text.length).toBeGreaterThan(0);
-      expect(raw.slice(pos).startsWith(c.chunk_text) || raw.includes(c.chunk_text)).toBe(true);
-      pos += c.chunk_text.length - Math.min(10, c.chunk_text.length);
+      const body = originalBody(c.chunk_text);
+      expect(body.length).toBeGreaterThan(0);
+      expect(raw.slice(pos).startsWith(body) || raw.includes(body)).toBe(true);
+      pos += body.length - Math.min(10, body.length);
     }
   });
 });
