@@ -42,6 +42,7 @@ export interface LedgerStore {
   listDocuments(): DocumentIndexRow[];
   upsertDocument(input: UpsertDocumentInput): void;
   deleteBySourcePath(source_path: string): void;
+  clearDocuments(): void;
   close(): void;
 }
 
@@ -171,6 +172,10 @@ export function createLedgerStore(config: AppConfig): LedgerStore {
     deleteBySourcePath(source_path: string): void {
       const database = getDatabase();
       database.run("DELETE FROM document_index WHERE source_path = ?", [source_path]);
+    },
+    clearDocuments(): void {
+      const database = getDatabase();
+      database.run("DELETE FROM document_index");
     },
     close(): void {
       if (db) {

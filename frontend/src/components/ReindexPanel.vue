@@ -23,7 +23,7 @@ function onDocIdInput(ev: Event): void {
   docId.value = target?.value ?? "";
 }
 
-async function trigger(payload: { doc_id?: string }): Promise<void> {
+async function trigger(payload: { doc_id?: string; mode?: "full_reset" }): Promise<void> {
   if (isLoading.value) {
     return;
   }
@@ -58,6 +58,10 @@ function reindexById(): void {
   }
   void trigger({ doc_id: id });
 }
+
+function fullReset(): void {
+  void trigger({ mode: "full_reset" });
+}
 </script>
 
 <template>
@@ -69,7 +73,7 @@ function reindexById(): void {
     <p class="mb-3 text-sm text-on-surface-variant">
       不带参数时仅重建状态为
       <code class="rounded bg-surface px-1 py-0.5 text-xs">failed</code>
-      的文档；输入 <code class="rounded bg-surface px-1 py-0.5 text-xs">doc_id</code> 可定向重建单个文档。
+      的文档；输入 <code class="rounded bg-surface px-1 py-0.5 text-xs">doc_id</code> 可定向重建单个文档；全量重建会清空向量库和台账后重新扫描所有文档。
     </p>
 
     <div class="flex flex-col gap-3 md:flex-row md:items-end">
@@ -89,6 +93,10 @@ function reindexById(): void {
           <span class="material-symbols-outlined" slot="icon">priority_high</span>
           重建该 doc_id
         </md-outlined-button>
+        <md-filled-tonal-button :disabled="isLoading" @click="fullReset">
+          <span class="material-symbols-outlined" slot="icon">database</span>
+          清空并全量重建
+        </md-filled-tonal-button>
       </div>
     </div>
 
@@ -101,7 +109,13 @@ function reindexById(): void {
       v-if="lastResult && !isLoading"
       class="mt-3 rounded-xl bg-surface px-3 py-2 text-sm text-on-surface ring-1 ring-outline/20"
     >
-      已触发 <strong>{{ lastResult.triggered }}</strong> 个文档；失败 <strong>{{ lastResult.failed }}</strong> 个。
+      <template v-if="lastResult.mode === 'full_reset'">
+        全量重建完成：扫描 <strong>{{ lastResult.scanned ?? 0 }}</strong> 个文档；触发
+        <strong>{{ lastResult.triggered }}</strong> 个；失败 <strong>{{ lastResult.failed }}</strong> 个。
+      </template>
+      <template v-else>
+        已触发 <strong>{{ lastResult.triggered }}</strong> 个文档；失败 <strong>{{ lastResult.failed }}</strong> 个。
+      </template>
     </div>
 
     <div

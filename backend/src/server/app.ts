@@ -72,7 +72,8 @@ export function createFetchHandler(config: AppConfig): {
           config,
           ledger: getLedger(),
           vectorRepo: getVectorRepo(),
-          embedder: getEmbedder()
+          embedder: getEmbedder(),
+          qdrantClient: getQdrant()
         });
       } else if (url.pathname === "/api/chat") {
         response = await handleChatRequest(req, config);

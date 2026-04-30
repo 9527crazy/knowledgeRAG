@@ -1,5 +1,6 @@
 import { stat } from "node:fs/promises";
 import path from "node:path";
+import type { QdrantClient } from "@qdrant/js-client-rest";
 import { ValidationError } from "../common/errors";
 import { createLogger } from "../common/logger";
 import type { LedgerStore } from "../store/ledger";
@@ -8,7 +9,9 @@ import type { Embedder } from "./embedder";
 import type { AppConfig } from "../config/types";
 import type { DocumentIndexRow, ScannedFile, SupportedFileType } from "./types";
 import { hashFileContent } from "./hash";
-import { indexDocument } from "./index-document";
+import { executeIndexPlan, indexDocument } from "./index-document";
+import { scanSourceFiles } from "./file-scanner";
+import { buildIndexPlan, hashScannedFiles } from "./index-state-machine";
 
 const log = createLogger("reindex");
 
@@ -122,4 +125,44 @@ export async function reindexLedgerRows(
   }
 
   return { triggered, failed };
+}
+
+export interface FullResetReindexResult {
+  mode: "full_reset";
+  scanned: number;
+  triggered: number;
+  failed: number;
+}
+
+export async function fullResetReindex(
+  config: AppConfig,
+  ledger: LedgerStore,
+  vectorRepo: VectorRepository,
+  embedder: Embedder,
+  qdrantClient: QdrantClient
+): Promise<FullResetReindexResult> {
+  const exists = await qdrantClient.collectionExists(config.qdrant_collection_name);
+  if (exists.exists) {
+    log.info("清空 Qdrant collection", {
+      details: { collection: config.qdrant_collection_name }
+    });
+    await qdrantClient.deleteCollection(config.qdrant_collection_name);
+  }
+
+  await ledger.ensureSchema();
+  ledger.clearDocuments();
+
+  const scanned = await scanSourceFiles(config);
+  const hashes = await hashScannedFiles(scanned);
+  const plan = await buildIndexPlan(ledger, scanned, hashes);
+
+  await executeIndexPlan(config, ledger, vectorRepo, embedder, scanned, hashes, plan);
+
+  const rows = ledger.listDocuments();
+  return {
+    mode: "full_reset",
+    scanned: scanned.length,
+    triggered: plan.filter((p) => p.action === "add" || p.action === "update").length,
+    failed: rows.filter((r) => r.status === "failed").length
+  };
 }

@@ -33,6 +33,9 @@ function createMemoryLedger(rows: DocumentIndexRow[]): LedgerStore & { rows: Doc
     },
     upsertDocument(): void {},
     deleteBySourcePath(): void {},
+    clearDocuments(): void {
+      store.rows.length = 0;
+    },
     close(): void {}
   };
 }

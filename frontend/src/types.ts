@@ -64,9 +64,12 @@ export interface StatusResponse {
 
 export interface ReindexRequest {
   doc_id?: string;
+  mode?: "full_reset";
 }
 
 export interface ReindexResponse {
+  mode?: "full_reset";
+  scanned?: number;
   triggered: number;
   failed: number;
 }

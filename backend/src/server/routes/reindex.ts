@@ -1,8 +1,9 @@
+import type { QdrantClient } from "@qdrant/js-client-rest";
 import { ValidationError } from "../../common/errors";
 import { summarizeError } from "../../common/error-utils";
 import type { AppConfig } from "../../config/types";
 import type { Embedder } from "../../ingest/embedder";
-import { reindexLedgerRows } from "../../ingest/reindex";
+import { fullResetReindex, reindexLedgerRows } from "../../ingest/reindex";
 import type { LedgerStore } from "../../store/ledger";
 import type { VectorRepository } from "../../store/vector-repository";
 
@@ -32,6 +33,7 @@ export interface ReindexRouteDeps {
   ledger: LedgerStore;
   vectorRepo: VectorRepository;
   embedder: Embedder;
+  qdrantClient: QdrantClient;
 }
 
 export async function handleReindexRequest(req: Request, deps: ReindexRouteDeps): Promise<Response> {
@@ -43,8 +45,14 @@ export async function handleReindexRequest(req: Request, deps: ReindexRouteDeps)
     const body = await parseJsonBody(req);
 
     let doc_id: unknown;
+    let mode: unknown;
     if (body && typeof body === "object" && !Array.isArray(body)) {
       doc_id = (body as { doc_id?: unknown }).doc_id;
+      mode = (body as { mode?: unknown }).mode;
+    }
+
+    if (mode !== undefined && mode !== null && mode !== "full_reset") {
+      throw new ValidationError("mode 仅支持 full_reset");
     }
 
     if (doc_id !== undefined && doc_id !== null) {
@@ -55,6 +63,11 @@ export async function handleReindexRequest(req: Request, deps: ReindexRouteDeps)
       if (trimmed.length === 0) {
         throw new ValidationError("doc_id 不能为空");
       }
+    }
+
+    if (mode === "full_reset") {
+      const result = await fullResetReindex(deps.config, deps.ledger, deps.vectorRepo, deps.embedder, deps.qdrantClient);
+      return Response.json(result);
     }
 
     await deps.ledger.ensureSchema();
