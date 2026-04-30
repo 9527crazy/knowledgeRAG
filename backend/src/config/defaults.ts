@@ -13,7 +13,7 @@ export const defaultConfig: AppConfig = {
   chunk_overlap: 80,
   min_chunk_length: 50,
   top_k: 6,
-  similarity_threshold: 0.7,
+  similarity_threshold: 0.5,
   ollama_base_url: "http://localhost:11434",
   llm_model: "qwen2.5:7b",
   embedding_model: "bge-m3",
